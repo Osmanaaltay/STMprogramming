@@ -23,7 +23,7 @@
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-char data[7]= "Naber\r";
+char data[7]= "Naber\n";
 int buttonState = 0;
 
 /* USER CODE END PV */
@@ -83,7 +83,7 @@ int main(void)
 	  buttonState = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1);
 	 if(buttonState==1){
 		 HAL_UART_Transmit(&huart1, data, sizeof(data), HAL_MAX_DELAY);
-		 while(buttonState = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1)){}
+		 HAL_Delay(300);
 	 }
   }
   /* USER CODE END 3 */

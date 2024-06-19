@@ -25,6 +25,7 @@
 #include "stm32f4xx_hal.h"
 #include "stdio.h"
 #include "string.h"
+#include <stdbool.h>
 
 /* USER CODE END Includes */
 
@@ -47,12 +48,15 @@
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
+char rxData[7] = "";
+int flag =0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -79,7 +83,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  char rxData[50]="hello";
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -92,6 +96,9 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+
+  /* Initialize interrupts */
+  MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -103,6 +110,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  HAL_UART_Receive_IT(&huart1, (uint8_t *)rxData, 1);
+	  if(flag==1){
+
+		  flag=0;
+	  }
+
   }
   /* USER CODE END 3 */
 }
@@ -149,6 +162,17 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief NVIC Configuration.
+  * @retval None
+  */
+static void MX_NVIC_Init(void)
+{
+  /* USART1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(USART1_IRQn);
+}
+
+/**
   * @brief USART1 Initialization Function
   * @param None
   * @retval None
@@ -176,7 +200,7 @@ static void MX_USART1_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART1_Init 2 */
-
+  __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
   /* USER CODE END USART1_Init 2 */
 
 }
@@ -199,22 +223,16 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-    if (huart->Instance == USART1)
-    {
-        // Gelen veriyi işleyin
-        if (rxData[0] == '1')
-        {
-            char txData[] = "merhaba\r\n";
-            HAL_UART_Transmit(&huart1, (uint8_t *)txData, strlen(txData));
-        }
+	void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+	{
+		if (huart->Instance == USART1)
+		{
+		flag = 1;
+		HAL_UART_Transmit(&huart1, (uint8_t *)rxData, strlen(rxData),1);
 
-        // Tekrar alım kesmesini başlat (bir sonraki byte için)
-        HAL_UART_Receive_IT(&huart1, (uint8_t *)rxData, 1);
-    }
-}
 
+		}
+	}
 /* USER CODE END 4 */
 
 /**
