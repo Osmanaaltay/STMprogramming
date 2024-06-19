@@ -63,8 +63,8 @@ all: main-build
 main-build: led_blink.elf secondary-outputs
 
 # Tool invocations
-led_blink.elf led_blink.map: $(OBJS) $(USER_OBJS) C:\Users\osman\STM32CubeIDE\workspace_1.15.1\led_blink\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "led_blink.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\osman\STM32CubeIDE\workspace_1.15.1\led_blink\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="led_blink.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+led_blink.elf led_blink.map: $(OBJS) $(USER_OBJS) C:\Users\osman\OneDrive\Belgeler\GitHub\STM32\led_button_interrupt\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "led_blink.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\osman\OneDrive\Belgeler\GitHub\STM32\led_button_interrupt\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="led_blink.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
