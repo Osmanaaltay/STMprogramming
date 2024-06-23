@@ -1,9 +1,0 @@
-../Core/Src/main.c:22:5:main	16	static
-../Core/Src/main.c:40:6:SystemClock_Config	72	static
-../Core/Src/main.c:67:13:MX_I2C1_Init	8	static
-../Core/Src/main.c:84:13:MX_USART1_UART_Init	8	static
-../Core/Src/main.c:100:6:sendUARTData	32	static
-../Core/Src/main.c:107:9:readTemperature	32	static
-../Core/Src/main.c:137:9:readHumidity	32	static
-../Core/Src/main.c:167:13:MX_GPIO_Init	32	static
-../Core/Src/main.c:183:6:Error_Handler	4	static,ignoring_inline_asm
